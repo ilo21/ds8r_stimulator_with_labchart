@@ -1,0 +1,3 @@
+server error when starting labchart from matlab code is due to persistent adi
+solution:
+clear functions
