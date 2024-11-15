@@ -5,13 +5,15 @@ PULSEWIDTH = 1000;                  % pulse width setting on the device
 DWELL = 100;                        % dwell setting on the device
 
 % TASK SETTINGS
-% NFR (Reflex) is based on the condition that Z_SCORE_THRESHOLD was exceeded
-% z-score is calculated: Z-score = (Reflex_window_max_value – Baseline_mean)/Baseline_SD
 Z_SCORE_THRESHOLD = 12;             % value of the z-score above which, the reflex is counted
 BASELINE_WINDOW_BEGIN_MS = -65;     % beginning of the baseline window before the stimulus onset (ms)
 BASELINE_WINDOW_END_MS = -5;        % end of baseline winow before the stimulus onset (ms)
 REFLEX_WINDOW_BEGIN_MS = 40;        % beginning of reflex window after the stimulus onset (ms)
 REFLEX_WINDOW_END_MS = 150;         % end of reflex window after the stimulus onset (ms)
+STEP_UP_BIG_mAMP = 2;               % initial step up when no reflex was detected
+STEP_DOWN_BIG_mAMP = -1;            % step down when reflex was detected, until no reflex
+STEP_UP_FINE_mAMP = 0.5;            % small step up until next reflex is detected
+STEP_DOWN_FINE_mAMP = -0.5;         % small step down until no reflex
 THRESHOLD_PASS_CTR = 3;             % how many times the same stimulus evoked the reflex
 MIN_INTERVAL_SEC = 8;               % shortest inter stimulus interval (sec)
 MAX_INTERVAL_SEC = 12;              % longest inter stimulus interval (sec)
