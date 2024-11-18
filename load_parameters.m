@@ -16,18 +16,21 @@ STEP_DOWN_BIG_mAMP = -1;            % step down when reflex was detected, until 
 STEP_UP_FINE_mAMP = 0.5;            % small step up until next reflex is detected
 STEP_DOWN_FINE_mAMP = -0.5;         % small step down until no reflex
 THRESHOLD_PASS_CTR = 3;             % how many times the same stimulus evoked the reflex
-MIN_INTERVAL_SEC = 8;               % shortest inter stimulus interval (sec)
-MAX_INTERVAL_SEC = 12;              % longest inter stimulus interval (sec)
+MIN_INTERVAL_SEC = 3;               % shortest inter stimulus interval (sec)
+MAX_INTERVAL_SEC = 5;              % longest inter stimulus interval (sec)
+INTER_STIM_INTERVALS = MIN_INTERVAL_SEC:0.5:MAX_INTERVAL_SEC;    % Create an array of values from 8 to 12 with 0.5 steps
 
 % LABCHART SETTINGS
 TEMPLATE_LC_FILE = "NFR_template.adicht";
 CURRENT_PATH = pwd;
 PATH2TEMPLATE = fullfile(CURRENT_PATH,TEMPLATE_LC_FILE);
+STM_THRESHOLD_V = 0.1;           % min value in V, in LabChart channel for stmiulation with 1 mAmp
 RECORDING_MS_BEFORE_STIM = 100;
 RECORDING_MS_AFTER_STIM = 500;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SET UP THE STIMULATOR
+% connect digitimer to channel 2 in PowerLab!
 % open device and return handle for further calls
 [success, d128] = D128ctrl('open');
 % Download status from device and initial d128 object parameters
