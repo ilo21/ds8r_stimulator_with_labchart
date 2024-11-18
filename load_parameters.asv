@@ -23,8 +23,7 @@ MAX_INTERVAL_SEC = 12;              % longest inter stimulus interval (sec)
 TEMPLATE_LC_FILE = "NFR_template.adicht";
 CURRENT_PATH = pwd;
 PATH2TEMPLATE = fullfile(CURRENT_PATH,TEMPLATE_LC_FILE);
-RECORDING_MS_BEFORE_STIM = 100;
-RECORDING_MS_AFTER_STIM = 500;
+RECORDING_ms_BEFORE_STIM = 100
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SET UP THE STIMULATOR

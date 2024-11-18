@@ -43,7 +43,7 @@ secsPerTick = adi.doc.GetRecordSecsPerTick(blockIndex);
 %adi.doc.SetSelectionRange(blockIndex,blockLen-5.0/secsPerTick,blockIndex,blockLen);
 adi.doc.StopSampling;
 nr = adi.doc.NumberOfRecords;
-chan1 = adi.doc.GetChannelData(1,1,nr,1,-1); % channel 1 recent block data
-chan2 = adi.doc.GetChannelData(1,2,nr,1,-1); % channel 2 recent block data
-index = find(chan1 > 0.1, 1);  % Finds the first index where value is > 0.1
-meanValue = round(mean(chan1),3);
+chan1 = adi.doc.GetChannelData(1,2,nr,1,-1);
+chan2 = adi.doc.GetChannelData(1,2,nr,1,-1); % channel 2 data
+index = find(chan2 > 0.1, 1);  % Finds the first index where value is > 0.1
+meanValue = round(mean(chan2),3);

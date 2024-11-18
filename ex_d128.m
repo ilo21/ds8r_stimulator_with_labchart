@@ -10,7 +10,7 @@
 
 % Set value of pulsewidth, but does not upload to device
 [success, d128] = D128ctrl('source', d128, 'Internal');
-[success, d128] = D128ctrl('pulsewidth', d128, 2000);
+[success, d128] = D128ctrl('pulsewidth', d128, 1000);
 [success, d128] = D128ctrl('demand', d128, 1);
 [success, d128] = D128ctrl('dwell', d128, 400);
 
