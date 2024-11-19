@@ -29,9 +29,8 @@ RECORDING_MS_BEFORE_STIM = 100;
 RECORDING_MS_AFTER_STIM = 500;
 
 % BOOLEAN VALUE TO CHECK IF LOAD PARAMETERS WAS EXECUTED
-LOADED_PARAMETERS = 0;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % SET UP LOGGING
 LOG_FOLDER = "_LOG";
 % Specify the folder path
@@ -65,6 +64,4 @@ success = D128ctrl('upload', d128);
 [success, d128] = D128ctrl('enable', d128, 1); % make sure it is enabled
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-LOADED_PARAMETERS = 1;
 
-disp('SUCCESS. Parameters loaded');
