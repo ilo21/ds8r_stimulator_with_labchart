@@ -33,11 +33,21 @@ if exist('LOADED_PARAMETERS', 'var') == 1 && (LOADED_PARAMETERS == 1)
     data_matrix = time_column;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Wait for user to be ready
-    stimNo = 0;
     disp('Press Enter to start stimulations...');
     input('', 's');  % waits for any input from the user but does not store it. As soon as the user presses Enter, MATLAB proceeds to the next line
     disp('Started the test');
 
+    
+    % initialize important info to be logged:
+    stimNo = 0;
+    current = INIT_mAMP;
+    score = 0;
+    total_reflexes = 0;
+    stim_no_column = [];
+    current_column = [];
+    score_column = [];
+    total_reflexes_column = [];
+    
     % wait inter stimulus interval
     inter_stim_interval(INTER_STIM_INTERVALS);
     % start recording
@@ -60,14 +70,24 @@ if exist('LOADED_PARAMETERS', 'var') == 1 && (LOADED_PARAMETERS == 1)
     % Convert to column vector
     peri_stim_data = peri_stim_data(:); % the colon operator (:) converts to a column vector
     data_matrix = [data_matrix, peri_stim_data];
-
+    
+    % add logging info
+    stim_no_column = [stim_no_column,stimNo];
+    current_column = [current_column,current];
+    score_column = [score_column,z_score];
+    if z_score > Z_SCORE_THRESHOLD
+        total_reflexes = total_reflexes + 1;
+    end
+    total_reflexes_column = [total_reflexes_column,total_reflexes];
+    
+    
     % plot(time_vector,peri_stim_data);
     % % Add a vertical line at x = 0
     % xline(0, 'r--', 'LineWidth', 1.5);  % Red dashed line with thicker width
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % next stim
     % change the demand mAmp on digitimer
-    next_stim = INIT_mAMP + STEP_UP_BIG_mAMP;
+    next_stim = current + STEP_UP_BIG_mAMP;
     d128 = update_device_value(next_stim,d128);
 
     % wait inter stimulus interval
@@ -92,6 +112,16 @@ if exist('LOADED_PARAMETERS', 'var') == 1 && (LOADED_PARAMETERS == 1)
     peri_stim_data = peri_stim_data(:); % the colon operator (:) converts to a column vector
     % Append the new column to the data_matrix
     data_matrix = [data_matrix, peri_stim_data];
+    
+    % add logging info
+    stim_no_column = [stim_no_column,stimNo];
+    current_column = [current_column,next_stim];
+    score_column = [score_column,z_score];
+    if z_score > Z_SCORE_THRESHOLD
+        total_reflexes = total_reflexes + 1;
+    end
+    total_reflexes_column = [total_reflexes_column,total_reflexes];
+    
     % plot(time_vector,peri_stim_data);
     % % Add a vertical line at x = 0
     % xline(0, 'r--', 'LineWidth', 1.5);  % Red dashed line with thicker width
@@ -122,13 +152,23 @@ if exist('LOADED_PARAMETERS', 'var') == 1 && (LOADED_PARAMETERS == 1)
     peri_stim_data = peri_stim_data(:); % the colon operator (:) converts to a column vector
     % Append the new column to the data_matrix
     data_matrix = [data_matrix, peri_stim_data];
+    
+    % add logging info
+    stim_no_column = [stim_no_column,stimNo];
+    current_column = [current_column,next_stim];
+    score_column = [score_column,z_score];
+    if z_score > Z_SCORE_THRESHOLD
+        total_reflexes = total_reflexes + 1;
+    end
+    total_reflexes_column = [total_reflexes_column,total_reflexes];
+    
     % plot(time_vector,peri_stim_data);
     % % Add a vertical line at x = 0
     % xline(0, 'r--', 'LineWidth', 1.5);  % Red dashed line with thicker width
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Save emg channel data from all stimuli
-    filename = 'output.txt';
+    filename = 'peri_stim_windows.txt';
     file_path = fullfile(LOG_FOLDER_PATH,filename);
     % Open the file for writing
     fileID = fopen(file_path, 'w');
@@ -145,6 +185,33 @@ if exist('LOADED_PARAMETERS', 'var') == 1 && (LOADED_PARAMETERS == 1)
     fclose(fileID);
     % Append the matrix data to the file as tab-separated values
     writematrix(data_matrix, file_path, 'FileType', 'text', 'Delimiter', '\t', 'WriteMode', 'append');
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % save scores
+    filename = 'threshold.txt';
+    file_path = fullfile(LOG_FOLDER_PATH,filename);
+    % Open the file for writing
+    fileID = fopen(file_path, 'w');
+    
+    % Write the header row with the correct formatting and fixed widths
+    fprintf(fileID, '%-10s\t%-12s\t%-6s\t%-22s\n', 'Stim No:', 'Current (mA):', 'Score:', 'Total Reflexes:');
+
+    % Convert the columns to column vectors to ensure consistency
+    stim_no_column = stim_no_column(:);
+    current_column = current_column(:);
+    score_column = score_column(:);
+    total_reflexes_column = total_reflexes_column(:);
+
+    % Round the score column to 3 decimal places
+    score_column = round(score_column, 3);
+
+    % Loop through the data and write it row by row with fixed-width formatting
+    for i = 1:length(stim_no_column)
+        fprintf(fileID, '%-10d\t%-12.1f\t%-6.3f\t%-22d\n', stim_no_column(i), current_column(i), score_column(i), total_reflexes_column(i));
+    end
+
+    % Close the file after writing
+    fclose(fileID);
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % save labChart file
     LC_file_name = "test_log.adicht";
