@@ -1,3 +1,11 @@
+instructions for setting up Digitimer and matlab:
+https://www.digitimer.com/matlab-control-of-ds8r-stimulator/
+-Digitimer DS8R Virtual Front Panel Software Installer (supplied with DS8R).
+-Digitimer DS8R Matlab Solution ZIP file, including the DS8R Proxy DLL installer.
+-Base Matlab package, including a third-party compiler(MinGW-w64).
+-I had to install the MinGW-w64 compiler, by: 
+MATLAB Home tab, in the Environment section, click Add-Ons > Get Add-Ons
+
 server error when starting labchart from matlab code is due to persistent adi
 solution:
 clear functions
