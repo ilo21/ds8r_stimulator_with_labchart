@@ -164,9 +164,22 @@ while (current >= params.INIT_mAMP && current <= params.MAX_mAMP) && total_refle
  end % end while loop
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SAVE LOGS
+% create subfolder
+task_name_folder = char(datetime('now', 'Format', 'yyyy_MM_dd-HH_mm'));
+subfolder_path = fullfile(LOG_FOLDER_PATH,task_name_folder);
+% Check if the folder exists
+if exist(subfolder_path, 'dir') ~= 7
+    % If the folder does not exist, create it
+    mkdir(subfolder_path);
+    disp(['Folder created: ', subfolder_path]);
+else
+    % If the folder exists, display a message
+    disp(['Folder already exists: ', subfolder_path]);
+end
 % Save emg channel data from all stimuli
-filename = 'peri_stim_windows.txt';
-file_path = fullfile(LOG_FOLDER_PATH,filename);
+filename = strcat(task_name_folder, '_peri_stim_windows.txt');
+file_path = fullfile(subfolder_path,filename);
 % Open the file for writing
 fileID = fopen(file_path, 'w');
 % Write the header row with "Time (ms)" and subsequent "Stim_###" labels
@@ -184,12 +197,11 @@ fclose(fileID);
 writematrix(data_matrix, file_path, 'FileType', 'text', 'Delimiter', '\t', 'WriteMode', 'append');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % save scores
-filename = 'threshold.txt';
-file_path = fullfile(LOG_FOLDER_PATH,filename);
+filename = strcat(task_name_folder,'_threshold.txt');
+file_path = fullfile(subfolder_path,filename);
 % Open the file for writing
 fileID = fopen(file_path, 'w');
 
-currents_for_threshold = [3,4,5];
 if length(currents_for_threshold) > 0
     calculated_threshold = mean(currents_for_threshold);
     fprintf(fileID, ['Threshold: ', num2str(calculated_threshold), ' mA\n\n\n']);
@@ -217,8 +229,8 @@ fclose(fileID);
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % save labChart file
-LC_file_name = "test_log.adicht";
-adi.doc.SaveAs(fullfile(LOG_FOLDER_PATH,LC_file_name));
+LC_file_name = strcat(task_name_folder,"_test_log.adicht");
+adi.doc.SaveAs(fullfile(subfolder_path,LC_file_name));
 adi.doc.Close;
 adi.doc.release;
 adi.gLCApp.release;
