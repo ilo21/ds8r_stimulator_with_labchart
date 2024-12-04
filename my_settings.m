@@ -1,11 +1,12 @@
 function params = settings()
     % STIMULATOR SETTINGS
     params.INIT_mAMP = 1;                      % start stimulation value
-    params.MAX_mAMP = 10;                      % max stimulation value
+    params.MAX_mAMP = 7;                      % max stimulation value
     params.PULSEWIDTH = 1000;                  % pulse width setting on the device
     params.DWELL = 100;                        % dwell setting on the device
 
     % TASK SETTINGS
+    params.LOG_FOLDER = "_LOG";
     params.Z_SCORE_THRESHOLD = 12;             % value of the z-score above which, the reflex is counted
     params.MAX_REFLEXES = 3;                   % total number of reflexes to calculate average threshold
     params.BASELINE_WINDOW_BEGIN_MS = -65;     % beginning of the baseline window before the stimulus onset (ms)
