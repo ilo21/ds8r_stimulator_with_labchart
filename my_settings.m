@@ -1,7 +1,7 @@
 function params = settings()
     % STIMULATOR SETTINGS
-    params.INIT_mAMP = 1;                      % start stimulation value
-    params.MAX_mAMP = 30;                      % max stimulation value
+    params.INIT_mAMP = 3;                      % start stimulation value
+    params.MAX_mAMP = 40;                      % max stimulation value
     params.PULSEWIDTH = 1000;                  % pulse width setting on the device
     params.DWELL = 100;                        % dwell setting on the device
 
